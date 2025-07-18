@@ -85,10 +85,16 @@ const ExploreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
     }));
   }, []);
 
+  const tabKeyMap = {
+    [ExploreTab.NEW]: 'recent',
+    [ExploreTab.GRADUATING]: 'aboutToGraduate',
+    [ExploreTab.GRADUATED]: 'graduated',
+  } as const;
+
   const request = useMemo(() => {
     return Object.fromEntries(
       Object.values(ExploreTab).map((tab) => [
-        tab,
+        tabKeyMap[tab],
         {
           timeframe: EXPLORE_FIXED_TIMEFRAME,
           filters: {
