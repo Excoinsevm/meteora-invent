@@ -24,13 +24,22 @@ export class ApeClient {
       ? GetGemsTokenListIndividualResponse | undefined
       : GetGemsTokenListIndividualResponse;
   }> {
+    const partnerConfigKey = process.env.POOL_CONFIG_KEY;
+    if (!partnerConfigKey) {
+      throw new Error('Missing POOL_CONFIG_KEY environment variable');
+    }
+
     return ky
       .post(`${BASE_URL}/v1/pools/gems`, {
-        json: req,
+        json: {
+          ...req,
+          partnerConfigKey,
+        },
         ...options,
       })
       .json();
   }
+
   static async getToken(req: GetTokenRequest, options?: Options): Promise<GetTokenResponse> {
     return ky
       .get(`${BASE_URL}/v1/pools`, {
